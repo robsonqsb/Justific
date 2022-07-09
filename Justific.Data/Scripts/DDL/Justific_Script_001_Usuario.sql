@@ -22,7 +22,7 @@ declare
 	_id_usuario bigint;
 begin
 	select id into _id_usuario
-		from usuario
+		from vw_listar_usuarios
 	where login = trim(p_login);
 
 	if found then	
@@ -42,7 +42,7 @@ end;
 $$ language plpgsql;
 
 -- função para excluir logicamente um usuário
-create or replace procedure f_excluir_usuario (p_id_usuario bigint) as
+create or replace procedure p_excluir_usuario (p_id_usuario bigint) as
 $$
 begin
 	update usuario
@@ -59,16 +59,22 @@ create or replace view vw_listar_usuarios as
 		from usuario u
 	where not u.excluido;
 
+
 -- função para confirmação do login do usuário
-create or replace function f_confirmar_login_usuario (p_id_usuario bigint, p_senha varchar(20))
+create or replace function f_confirmar_login_usuario (p_login varchar(100), p_senha varchar(20))
 	returns boolean as
 $$
 	select true
 		from vw_listar_usuarios
-	where id = p_id_usuario and
+	where login = trim(p_login) and
 		  senha = p_senha;
 $$ language sql;
 
-
-
-	
+-- função para obter o usuário por login
+create or replace function f_obter_usuario (p_login varchar(100))
+	returns usuario as 
+$$
+	select *
+		from vw_listar_usuarios
+	where login = p_login;	
+$$ language sql;
