@@ -1,4 +1,5 @@
-﻿using Justific.Dominio.Interfaces.Repositorios;
+﻿using Justific.Dominio.Entidades;
+using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using System;
@@ -6,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Justific.Api.Controllers
 {
-    public class UsuarioController : BaseController
+    public class UsuarioController : BaseController<Usuario>
     {
         private readonly IRepositorioUsuario repositorioUsuario;
 
         public UsuarioController(IRepositorioUsuario repositorioUsuario)
+            : base(repositorioUsuario)
         {
             this.repositorioUsuario = repositorioUsuario ?? throw new ArgumentNullException(nameof(repositorioUsuario));
         }

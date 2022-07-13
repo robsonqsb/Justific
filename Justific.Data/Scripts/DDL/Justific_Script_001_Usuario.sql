@@ -1,6 +1,3 @@
--- criação do banco
-create database justific_db;
-
 -- exclusão da tabela de usuário
 drop table if exists usuario;
 
@@ -46,7 +43,8 @@ create or replace procedure p_excluir_usuario (p_id_usuario bigint) as
 $$
 begin
 	update usuario
-	set excluido = true
+	set excluido = true,
+		alterado_em = current_timestamp
 	where id = p_id_usuario;
 
 	assert found, 'Usuário com o id ' || p_id_usuario::text || ' não foi localizado.';
@@ -58,7 +56,6 @@ create or replace view vw_listar_usuarios as
 	select *
 		from usuario u
 	where not u.excluido;
-
 
 -- função para confirmação do login do usuário
 create or replace function f_confirmar_login_usuario (p_login varchar(100), p_senha varchar(20))

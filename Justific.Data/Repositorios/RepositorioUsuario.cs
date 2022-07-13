@@ -2,19 +2,16 @@
 using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Justific.Infra.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios
 {
-    public class RepositorioUsuario : IRepositorioUsuario
+    public class RepositorioUsuario : RepositorioBase<Usuario>, IRepositorioUsuario
     {
-        private readonly IJustificContext justificContext;
-
         public RepositorioUsuario(IJustificContext justificContext)
+            : base(justificContext)
         {
-            this.justificContext = justificContext ?? throw new ArgumentNullException(nameof(justificContext));
         }
 
         public async Task<bool> ConfirmarLogin(string login, string senha)

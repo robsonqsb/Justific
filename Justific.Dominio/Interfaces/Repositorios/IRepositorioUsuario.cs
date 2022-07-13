@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Justific.Dominio.Interfaces.Repositorios
 {
-    public interface IRepositorioUsuario
+    public interface IRepositorioUsuario : IRepositorioBase<Usuario>
     {
         Task<IEnumerable<Usuario>> Listar();
         Task<long> IncluirAlterar(string login, string senha);

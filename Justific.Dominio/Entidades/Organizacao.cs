@@ -3,10 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace Justific.Dominio.Entidades
 {
-    public class Usuario : EntidadeBase
+    public class Organizacao : EntidadeBase
     {
-        [JsonPropertyName("login")]
-        public string Login { get; set; }
+        [JsonPropertyName("nome")]
+        public string Nome { get; set; }
+        [JsonPropertyName("cnpj")]
+        public string Cnpj { get; set; }
         [JsonPropertyName("data_criacao")]
         public DateTime DataCriacao { get; set; }
         [JsonPropertyName("alterado_em")]
