@@ -31,7 +31,7 @@ namespace Justific.Data.Repositorios
                                     o.id,
                                     o.nome,
                                     o.cnpj
-                                from vw_listar_funcionarios f
+                                from vw_listar_membros f
                                     inner join vw_listar_organizacoes o
                                         on f.organizacao_id = o.id";
 
