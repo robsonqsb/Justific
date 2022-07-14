@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Justific.Dominio.Entidades
 {
-    public class Funcionario : EntidadeBase
+    public class Membro : EntidadeBase
     {
         [JsonPropertyName("codigo_registro")]
         public string CodigoRegistro { get; set; }

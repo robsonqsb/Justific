@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios
 {
-    public class RepositorioFuncionario : RepositorioBase<Funcionario>, IRepositorioFuncionario
+    public class RepositorioMembro : RepositorioBase<Membro>, IRepositorioMembro
     {
-        public RepositorioFuncionario(IJustificContext justificContext)
+        public RepositorioMembro(IJustificContext justificContext)
             : base (justificContext)
         {
         }
@@ -20,7 +20,7 @@ namespace Justific.Data.Repositorios
                 .Conexao.ExecuteAsync(sqlQuery, new { id });
         }
 
-        public async Task<IEnumerable<Funcionario>> Listar()
+        public async Task<IEnumerable<Membro>> Listar()
         {
             var sqlQuery = @"select f.id,
                                     f.codigo_registro CodigoRegistro,
@@ -36,15 +36,15 @@ namespace Justific.Data.Repositorios
                                         on f.organizacao_id = o.id";
 
             return await justificContext
-                .Conexao.QueryAsync<Funcionario, Organizacao, Funcionario>(sqlQuery, (funcionario, organizacao) =>
+                .Conexao.QueryAsync<Membro, Organizacao, Membro>(sqlQuery, (membro, organizacao) =>
                 {
-                    return new Funcionario()
+                    return new Membro()
                     {
-                        Id = funcionario.Id,
-                        CodigoRegistro = funcionario.CodigoRegistro,
-                        Nome   = funcionario.Nome,
-                        DataCriacao = funcionario.DataCriacao,
-                        AlteradoEm = funcionario.AlteradoEm,
+                        Id = membro.Id,
+                        CodigoRegistro = membro.CodigoRegistro,
+                        Nome   = membro.Nome,
+                        DataCriacao = membro.DataCriacao,
+                        AlteradoEm = membro.AlteradoEm,
                         Organizacao = new Organizacao()
                         {
                             Id = organizacao.Id,
@@ -55,7 +55,7 @@ namespace Justific.Data.Repositorios
                 }, splitOn: "id");
         }
 
-        public Task<Funcionario> Obter(string codigoRegistro, int organizacaoId)
+        public Task<Membro> Obter(string codigoRegistro, int organizacaoId)
         {
             throw new System.NotImplementedException();
         }
