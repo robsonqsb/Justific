@@ -60,11 +60,13 @@ $$
 	end;
 $$ language plpgsql;
 
--- view para listar os membros
+-- view para listar os membros e organização atrelada
 create or replace view vw_listar_membros as
 	select *
-		from membro
-	where not excluido;
+		from membro m
+			inner join vw_listar_organizacoes o
+				on m.organizacao_id = o.id
+	where not m.excluido;
 
 -- função para obter um membro através do código de registro
 create or replace function f_obter_membro(p_codigo_registro varchar(50), p_organizacao_id int)

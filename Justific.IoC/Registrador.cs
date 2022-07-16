@@ -20,9 +20,9 @@ namespace Justific.IoC
         public void Registrar()
         {
             services.TryAddScoped<IJustificContext, JustificContext>();
-
             services.TryAddScoped<IRepositorioUsuario, RepositorioUsuario>();
             services.TryAddScoped<IRepositorioOrganizacao, RepositorioOrganizacao>();
+            services.TryAddScoped<IRepositorioMembro, RepositorioMembro>();
         }
     }
 }

@@ -16,54 +16,54 @@ namespace Justific.Data.Repositorios
 
         public async Task<bool> ConfirmarLogin(string login, string senha)
         {
-            var sqlQuery = "select f_confirmar_login_usuario(@login, @senha);";
+            var query = "select f_confirmar_login_usuario(@login, @senha);";
 
             var confirmado = await justificContext
-                .Conexao.ExecuteScalarAsync<bool>(sqlQuery, new { login, senha });
+                .Conexao.ExecuteScalarAsync<bool>(query, new { login, senha });
 
             return confirmado;
         }
 
         public async Task Excluir(long id)
         {
-            var sqlQuery = "call p_excluir_usuario(@id);";
+            var query = "call p_excluir_usuario(@id);";
 
             await justificContext
-                .Conexao.ExecuteAsync(sqlQuery, new { id });
+                .Conexao.ExecuteAsync(query, new { id });
         }
 
         public async Task<long> IncluirAlterar(string login, string senha)
         {
-            var sqlQuery = "select f_incluir_alterar_usuario(@login, @senha);";
+            var query = "select f_incluir_alterar_usuario(@login, @senha);";
 
             var id = await justificContext
-                .Conexao.ExecuteScalarAsync<long>(sqlQuery, new { login, senha });
+                .Conexao.ExecuteScalarAsync<long>(query, new { login, senha });
 
             return id;
         }
 
         public async Task<IEnumerable<Usuario>> Listar()
         {
-            var sqlQuery = @"select id,
-                                    login,
-                                    data_criacao DataCriacao,
-                                    alterado_em AlteradoEm
-                                from vw_listar_usuarios;";
+            var query = @"select id,
+                                 login,
+                                 data_criacao DataCriacao,
+                                 alterado_em AlteradoEm
+                            from vw_listar_usuarios;";
 
             return await justificContext
-                .Conexao.QueryAsync<Usuario>(sqlQuery);
+                .Conexao.QueryAsync<Usuario>(query);
         }
 
         public async Task<Usuario> Obter(string login)
         {
-            var sqlQuery = @"select id,
-                                    login,
-                                    data_criacao DataCriacao,
-                                    alterado_em AlteradoEm
-                                from f_obter_usuario (@login);";
+            var query = @"select id,
+                                 login,
+                                 data_criacao DataCriacao,
+                                 alterado_em AlteradoEm
+                            from f_obter_usuario (@login);";
 
             return await justificContext
-                .Conexao.QueryFirstOrDefaultAsync<Usuario>(sqlQuery, new { login });
+                .Conexao.QueryFirstOrDefaultAsync<Usuario>(query, new { login });
         }
     }
 }
