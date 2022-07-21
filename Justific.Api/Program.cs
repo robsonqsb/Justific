@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Justific.Api
 {
+
     public class Program
     {
         public static void Main(string[] args)
