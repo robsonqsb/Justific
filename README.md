@@ -6,7 +6,7 @@ Se trata de um projeto de API em .Net Core que realiza operações de manipulaç
 
 O intuíto é colocar em prática os conhecimentos adquiridos nas formações de banco de dados da <b>ALURA</b>, sendo que a maior parte da lógica está aplicada no banco de dados para consolidação dos conhecimentos (Os scripts para o banco de dados podem ser verificados <a href="https://github.com/robsonqsb/Justific/tree/master/Justific.Data/Scripts">aqui</a>).
 
-Esse projeto pode não estar aplicando a melhores práticas no mercado, mas como dito é para consolidar os conhecimentos das formações, então está montado de forma simples.
+Esse projeto pode não estar aplicando a melhores práticas do mercado, mas como dito é para consolidar os conhecimentos das formações, então está montado de forma simples.
 
 <h4 align="center"> Evoluindo . . . </h4>
 
