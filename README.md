@@ -1,6 +1,6 @@
 # <p align="center">Justific</p>
 ## <p align="center">Projeto para cadastro e gerenciamento de justificativas para ausências</p>
-<p align="center">Essa aplicação pode ser utilizada em qualquer ambiente que necessite registrar e controlar justificativas aplicadas para ausências.</p>
+<p align="center">Essa aplicação pode ser utilizada em qualquer ambiente que necessite registrar e controlar justificativas aplicadas/vinculadas para ausências.</p>
 
 Se trata de um projeto de API em .Net Core que realiza operações de manipulação do banco de dados utilizando Dapper.
 
