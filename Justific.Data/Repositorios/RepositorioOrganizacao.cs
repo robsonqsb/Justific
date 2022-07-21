@@ -39,11 +39,11 @@ namespace Justific.Data.Repositorios
         public async Task<Organizacao> Obter(string cnpj)
         {
             var query = @"select id,
-                                    nome,
-                                    cnpj,
-                                    data_criacao DataCriacao,
-                                    alterado_em AlteradoEm
-                                from f_obter_organizacao (@cnpj);";
+                                 nome,
+                                 cnpj,
+                                 data_criacao DataCriacao,
+                                 alterado_em AlteradoEm
+                            from f_obter_organizacao (@cnpj);";
 
             return await justificContext
                 .Conexao.QueryFirstOrDefaultAsync<Organizacao>(query, new { cnpj });

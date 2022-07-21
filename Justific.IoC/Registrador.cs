@@ -23,6 +23,7 @@ namespace Justific.IoC
             services.TryAddScoped<IRepositorioUsuario, RepositorioUsuario>();
             services.TryAddScoped<IRepositorioOrganizacao, RepositorioOrganizacao>();
             services.TryAddScoped<IRepositorioMembro, RepositorioMembro>();
+            services.TryAddScoped<IRepositorioJustificativa, RepositorioJustificativa>();
         }
     }
 }

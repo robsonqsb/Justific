@@ -1,5 +1,6 @@
 ﻿using Justific.Data.Repositorios;
 using Justific.Dominio.Entidades;
+using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

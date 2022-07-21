@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Justific.Dominio.Dtos;
 using Justific.Dominio.Entidades;
+using Justific.Dominio.Interfaces.Repositorios;
 using Justific.Infra.Interfaces;
 using System.Collections.Generic;
 using System.Linq;

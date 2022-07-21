@@ -1,10 +1,9 @@
 ﻿using Justific.Dominio.Dtos;
 using Justific.Dominio.Entidades;
-using Justific.Dominio.Interfaces.Repositorios;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Justific.Data.Repositorios
+namespace Justific.Dominio.Interfaces.Repositorios
 {
     public interface IRepositorioMembro : IRepositorioBase<Membro>
     {

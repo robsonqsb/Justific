@@ -38,7 +38,7 @@ begin
 end;
 $$ language plpgsql;
 
--- função para excluir logicamente um usuário
+-- procedure para excluir logicamente um usuário
 create or replace procedure p_excluir_usuario (p_id_usuario bigint) as
 $$
 begin
