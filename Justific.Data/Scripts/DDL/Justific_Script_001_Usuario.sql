@@ -1,9 +1,6 @@
--- exclusão da tabela de usuário
-drop table if exists usuario;
-
 -- criação da tabela de usuário
-create table usuario (
-	id serial primary key,
+create table if not exists usuario (
+	id bigserial primary key,
 	login varchar(100) not null,
 	senha varchar(20) not null,
 	data_criacao timestamp not null default current_timestamp,

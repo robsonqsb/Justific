@@ -1,10 +1,10 @@
 -- criação da tabela de justificativa
 create table if not exists justificativa
 (
-	id serial primary key,
-	membro_id int not null references membro(id),
+	id bigserial primary key,
+	membro_id bigint not null references membro(id),
 	data_ocorrencia date not null default current_date,
-	possui_comprovante boolean default true,
+	possui_comprovante boolean not null default true,
 	comentarios varchar(1000),
 	data_criacao timestamp not null default current_timestamp,
 	alterado_em timestamp default null,
@@ -13,22 +13,25 @@ create table if not exists justificativa
 
 -- função para incluir/alterar uma justificativa
 create or replace function f_incluir_alterar_justificativa (p_codigo_registro_membro varchar(50), 
-															p_cnpj_organizacao varchar(12),
+															p_cnpj_organizacao varchar(20),
 															p_comentarios varchar(1000),
 															p_data_ocorrencia date default current_date, 
 															p_possui_comprovante boolean default true)
-	returns int as
+	returns bigint as
 $$
 declare
-	_id_membro int;
-	_id_justificativa int;
+	_id_membro bigint;
+	_id_justificativa bigint;
 begin
+	
+	assert f_validar_cnpj(p_cnpj_organizacao), 'O CNPJ da organização é inválido';
+		
 	select m.membro_id into _id_membro
 		from vw_listar_membros m
 			inner join vw_listar_organizacoes o
 				on m.organizacao_id = o.id
 	where m.codigo_registro = p_codigo_registro_membro and
-		  o.cnpj = p_cnpj_organizacao;
+		  o.cnpj = f_considerar_somente_digitos(p_cnpj_organizacao);
 
 	assert found, 'O membro com o código de registros ' || p_codigo_registro_membro || ' e CNPJ ' || p_cnpj_organizacao || ' não foi localizado.';
 
@@ -56,7 +59,7 @@ end;
 $$ language plpgsql;
 
 -- procedure para excluir logicamente uma justificativa
-create or replace procedure p_excluir_justificativa (p_id_justificativa int) as
+create or replace procedure p_excluir_justificativa (p_id_justificativa bigint) as
 $$
 begin
 	update justificativa
@@ -77,14 +80,14 @@ create or replace view vw_listar_justificativas as
 		   j.data_criacao,
 		   j.alterado_em,
 		   j.membro_id,
-		   m.codigo_registro,
-		   m.nome_membro,
-		   m.organizacao_id,
+		   m.CodigoRegistro,
+		   m.NomeMembro,
+		   m.OrganizacaoId,
 		   o.nome nome_organizacao,
 		   o.cnpj
 		from justificativa j
 			inner join vw_listar_membros m
-				on j.membro_id = m.membro_id
+				on j.membro_id = m.MembroId
 			inner join vw_listar_organizacoes o
-				on m.organizacao_id = o.id
+				on m.OrganizacaoId = o.id
 	where not j.excluido;

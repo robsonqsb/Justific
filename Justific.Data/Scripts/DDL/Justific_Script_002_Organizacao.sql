@@ -1,8 +1,7 @@
 -- criação da tabela de organização
-drop table if exists organizacao;
-create table organizacao
+create table if not exists organizacao
 (
-	id serial primary key,
+	id bigserial primary key,
 	nome varchar(500) not null,
 	cnpj char(14) not null,
 	data_criacao timestamp not null default current_timestamp,
@@ -11,8 +10,7 @@ create table organizacao
 );
 
 -- criação da tabela de relação entre usuários e organizações
-drop table if exists usuario_organizacao;
-create table usuario_organizacao
+create table if not exists usuario_organizacao
 (
 	usuario_id bigint not null references usuario(id) on delete cascade,
 	organizacao_id bigint not null references organizacao(id) on delete cascade,
@@ -20,24 +18,34 @@ create table usuario_organizacao
 	constraint usuario_organizacao_pkey primary key (usuario_id, organizacao_id)
 );
 
--- criação da função para validar o cnpj informado
-create or replace function f_validar_cnpj (p_cnpj char(14))
-	returns boolean as
+-- criação da função para desprezar caracteres do CNPJ
+create or replace function f_considerar_somente_digitos (p_cnpj char(20))
+	returns char(14) as
 $$
 begin
-	return char_length(trim(replace(replace(replace(p_cnpj, '.', ''), '/', ''), '-', ''))) = 14;	
+	return replace(replace(replace(trim(p_cnpj), '.', ''), '/', ''), '-', '');
 end;
 $$ language plpgsql;
 
+-- criação da função para validar o cnpj informado
+create or replace function f_validar_cnpj (p_cnpj char(20))
+	returns boolean as
+$$
+begin
+	return char_length(f_considerar_somente_digitos(p_cnpj)) = 14;	
+end;
+$$ language plpgsql;
 
 -- função para incluir/alterar organização
-create or replace function f_incluir_alterar_organizacao(p_nome varchar(500), p_cnpj char(14))
+create or replace function f_incluir_alterar_organizacao(p_nome varchar(500), p_cnpj char(20))
 	returns bigint as
 $$
 	declare
 		_id_organizacao bigint;
 	begin
 		assert (select f_validar_cnpj(p_cnpj)), 'CNPJ no formato inválido';
+	
+		p_cnpj = f_considerar_somente_digitos(p_cnpj);
 	
 		select id into _id_organizacao
 			from organizacao
@@ -88,12 +96,12 @@ create or replace function f_obter_organizacao (p_cnpj char(14))
 $$
 	select *
 		from vw_listar_organizacoes
-	where cnpj = trim(replace(replace(replace(p_cnpj, '.', ''), '/', ''), '-', '')) 
+	where cnpj = f_considerar_somente_digitos(p_cnpj) 
 $$ language sql;
 
 
 -- criação da função para vincular organização ao usuário
-create or replace function f_vincular_organizacao_usuario (p_login_usuario varchar(100), p_cnpj_organizacao char(14), p_desfazer boolean default false)
+create or replace function f_vincular_organizacao_usuario (p_login_usuario varchar(100), p_cnpj_organizacao char(20), p_desfazer boolean default false)
 	returns boolean as
 $$
 declare
@@ -107,9 +115,13 @@ begin
 
 	assert found, concat('Usuário com o login ', p_login_usuario, ' não foi localizado');
 
+	assert f_validar_cnpj(p_cnpj_organizacao), concat('CNPJ da organização é inválido');
+
+	p_cnpj_organizacao = f_considerar_somente_digitos(p_cnpj_organizacao);
+
 	select id into _id_organizacao
 		from vw_listar_organizacoes
-	where cnpj = trim(replace(replace(replace(p_cnpj_organizacao, '.', ''), '/', ''), '-', ''));
+	where cnpj = p_cnpj_organizacao;
 
 	assert found, concat('A organização não foi localizada pelo cnpj');
 
@@ -142,11 +154,12 @@ end;
 $$ language plpgsql;
 
 -- criação da função para listar as associações entre organizações e usuários
-create or replace function f_listar_organizacoes_usuarios(p_cnpj_organizacao char(14))
-	returns table (organizacao_id int, nome_organizacao varchar(500), usuario_id int, login_usuario varchar(100)) as
+create or replace function f_listar_organizacoes_usuarios(p_cnpj_organizacao char(20))
+	returns table (organizacao_id bigint, nome_organizacao varchar(500), usuario_id bigint, login_usuario varchar(100)) as
 $$
 begin
-	assert (select f_validar_cnpj(p_cnpj)), 'CNPJ no formato inválido';
+	assert f_validar_cnpj(p_cnpj_organizacao), 'CNPJ no formato inválido';	
+	
 	return query
 		select o.id,
 			   o.nome,
@@ -157,6 +170,6 @@ begin
 					on o.id = uo.organizacao_id 
 				inner join vw_listar_usuarios u 
 					on uo.usuario_id = u.id
-		where o.cnpj = p_cnpj_organizacao;
+		where o.cnpj = f_considerar_somente_digitos(p_cnpj_organizacao);
 end;
 $$ language plpgsql;

@@ -61,13 +61,13 @@ namespace Justific.Data.Repositorios
 
         private async Task<IEnumerable<ItemListaMembroOrganizacaoDto>> ObterRegistros(string codigoRegistro = null, int? organizacoaId = null)
         {
-            var query = @$"select membro_id MembroId,
-                                  codigo_registro CodigoRegistro,
-                                  nome_membro NomeMembro,
-                                  data_criacao_membro DataCriacaoMembro,
-                                  membro_alterado_em MembroAlteradoEm,
-                                  organizacao_id OrganizacaoId,
-                                  nome_organizacao NomeOrganizacao,
+            var query = @$"select membro_id,
+                                  codigo_registro,
+                                  nome_membro,
+                                  data_criacao_membro,
+                                  membro_alterado_em,
+                                  organizacao_id,
+                                  nome_organizacao,
                                   cnpj
                             from vw_listar_membros
                            where (@codigoRegistro is null or (@codigoRegistro is not null and codigo_registro = @codigoRegistro)) and
