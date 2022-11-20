@@ -92,7 +92,10 @@ CREATE OR ALTER PROC SP_OBTER_USUARIO
 	@Login VARCHAR(100)
 AS
 BEGIN
-	SELECT TOP 1 *
+	SELECT TOP 1 Id,
+				 [Login],
+				 Data_Criacao DataCriacao,
+				 Alterado_Em AlteradoEm
 		FROM VW_Listar_Usuarios
 	WHERE [Login] = @Login
 END

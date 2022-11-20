@@ -2,6 +2,7 @@
 using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Justific.Api.Controllers
@@ -21,8 +22,13 @@ namespace Justific.Api.Controllers
         {
             try
             {
-                return Ok(await repositorioJustificativa
-                    .Listar());
+                var itens = await repositorioJustificativa
+                    .Listar();
+
+                if (!itens.Any())
+                    return NoContent();
+
+                return Ok(itens);
             }
             catch (Exception ex)
             {

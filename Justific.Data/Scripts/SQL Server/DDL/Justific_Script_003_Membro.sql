@@ -11,8 +11,7 @@ IF OBJECT_ID('Membro', 'U') IS NULL
 		Organizacao_Id BIGINT NOT NULL FOREIGN KEY REFERENCES Organizacao(Id),
 		Data_Criacao DATETIME NOT NULL DEFAULT GETDATE(),
 		Alterado_Em DATETIME DEFAULT NULL,
-		Excluido BIT DEFAULT NULL,
-		UNIQUE (Organizacao_Id, Codigo_Registro)
+		Excluido BIT NOT NULL DEFAULT 'False'
 	)
 GO
 
@@ -45,12 +44,12 @@ BEGIN
 		RAISERROR ('A organização não foi localizada com o CNPJ informado', 0, 0)
 	END
 
-	SELECT @Id_Membro = Id
-		FROM Membro
-	WHERE Organizacao_Id = @Id_Organizacao AND
-		  Codigo_Registro = @Codigo_Registro
+	SELECT @Id_Membro = MembroId
+		FROM VW_LISTAR_MEMBROS
+	WHERE OrganizacaoId = @Id_Organizacao AND
+		  CodigoRegistro = @Codigo_Registro
 
-	IF @@ROWCOUNT = 0
+	IF @@ROWCOUNT > 0
 	BEGIN
 		UPDATE Membro
 		SET Nome = @Nome,

@@ -40,8 +40,8 @@ BEGIN
 	IF @@ROWCOUNT = 0
 		RAISERROR ('Não foi encontrado o membro com o código de registro e CNPJ da organização informados não foi localizado', 0, 0)
 
-	SELECT @Id_Justificativa = Id
-		FROM Justificativa
+	SELECT @Id_Justificativa = justificativa_id
+		FROM VW_LISTAR_JUSTIFICATIVAS
 	WHERE Membro_Id = @Id_Membro AND
 		  Data_Ocorrencia = @Data_Ocorrencia
 
@@ -101,3 +101,17 @@ AS
 				ON m.OrganizacaoId = o.Id
 	WHERE j.Excluido = 'False'
 GO
+
+-- criação da proc para obter a justificativa
+CREATE OR ALTER PROC SP_OBTER_JUSTIFICATIVA
+	@Codigo_Registro_Membro VARCHAR(50),
+	@Cnpj_Organizacao CHAR(14),
+	@Data_Ocorrencia DATE
+AS
+BEGIN
+	SELECT *
+		FROM VW_LISTAR_JUSTIFICATIVAS
+	WHERE CodigoRegistro = @Codigo_Registro_Membro
+		AND cnpj = @Cnpj_Organizacao
+		AND data_ocorrencia = @Data_Ocorrencia
+END

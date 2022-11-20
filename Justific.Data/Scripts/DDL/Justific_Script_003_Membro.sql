@@ -7,8 +7,7 @@ create table if not exists membro
 	organizacao_id bigint not null references organizacao(id),
 	data_criacao timestamp not null default current_timestamp,
 	alterado_em timestamp default null,
-	excluido boolean not null default false,
-	unique(organizacao_id, codigo_registro)
+	excluido boolean not null default false
 );
 
 -- função para incluir/ alterar um membro
@@ -28,10 +27,10 @@ $$
 	
 		assert found, 'Organização com o cnpj ' || p_cnpj_organizacao || ' não foi localizada';
 	
-		select id into _id_membro
-			from membro
-		where codigo_registro = p_codigo_registro and
-			  organizacao_id = _id_organizacao;
+		select membroid into _id_membro
+			from vw_listar_membros
+		where codigoregistro = p_codigo_registro and
+			  organizacaoid = _id_organizacao;
 	
 		if found then
 			update membro

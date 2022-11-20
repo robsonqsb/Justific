@@ -1,3 +1,4 @@
+using Justific.Dominio.Enumeradores;
 using Justific.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +22,7 @@ namespace Justific.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var registrador = new Registrador(services);
-            registrador.Registrar();
+            registrador.Registrar((TipoConexaoBD)int.Parse(Configuration.GetSection("TipoConexaoBD").Value));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

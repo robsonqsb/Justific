@@ -26,19 +26,19 @@ begin
 	
 	assert f_validar_cnpj(p_cnpj_organizacao), 'O CNPJ da organização é inválido';
 		
-	select m.membro_id into _id_membro
+	select m.membroid into _id_membro
 		from vw_listar_membros m
 			inner join vw_listar_organizacoes o
-				on m.organizacao_id = o.id
-	where m.codigo_registro = p_codigo_registro_membro and
+				on m.organizacaoid = o.id
+	where m.codigoregistro = p_codigo_registro_membro and
 		  o.cnpj = f_considerar_somente_digitos(p_cnpj_organizacao);
 
 	assert found, 'O membro com o código de registros ' || p_codigo_registro_membro || ' e CNPJ ' || p_cnpj_organizacao || ' não foi localizado.';
 
-	select id into _id_justificativa
-		from justificativa
+	select justificativa_id into _id_justificativa
+		from vw_listar_justificativas
 	where membro_id = _id_membro and
-		data_ocorrencia = p_data_ocorrencia;
+		  data_ocorrencia = p_data_ocorrencia;
 	
 	if found then
 		update justificativa
@@ -91,3 +91,16 @@ create or replace view vw_listar_justificativas as
 			inner join vw_listar_organizacoes o
 				on m.OrganizacaoId = o.id
 	where not j.excluido;
+
+-- criação da função para obter a justificativa
+create or replace function f_obter_justificativa (p_codigo_registro_membro varchar(50),
+											      p_cnpj_organizacao char(14),
+												  p_data_ocorrencia date)
+	returns setof vw_listar_justificativas as
+$$
+	select *
+		from vw_listar_justificativas lj
+	where lj.codigoregistro = p_codigo_registro_membro
+		and lj.cnpj = p_cnpj_organizacao
+		and lj.data_ocorrencia = p_data_ocorrencia;	
+$$ language sql;

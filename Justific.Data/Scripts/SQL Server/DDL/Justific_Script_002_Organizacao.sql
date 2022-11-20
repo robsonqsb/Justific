@@ -52,7 +52,7 @@ BEGIN
 		RAISERROR('O CNPJ está no formato inválido.', 0, 0)
 
 	SELECT @Id_Organizacao = Id
-		FROM Organizacao
+		FROM VW_LISTAR_ORGANIZACOES
 	WHERE Cnpj = @Cnpj
 
 	IF @Id_Organizacao > 0
@@ -108,7 +108,11 @@ CREATE OR ALTER PROC SP_OBTER_ORGANIZACAO
 	@Cnpj CHAR(14)
 AS
 BEGIN
-	SELECT *
+	SELECT Id,
+		   Nome,
+		   Cnpj,
+		   Data_Criacao DataCriacao,
+		   Alterado_Em Alterado_Em
 		FROM VW_LISTAR_ORGANIZACOES
 	WHERE Cnpj = @Cnpj
 END
@@ -196,10 +200,10 @@ BEGIN
 	IF dbo.F_VALIDAR_CNPJ(@Cnpj_Organizacao) = 'False'
 		RAISERROR('O CNPJ está no formato inválido.', 0, 0)
 
-	SELECT o.Id Organizacao_Id,
-		   o.Nome Nome_Organizacao,
-		   u.Id Usuario_Id,
-		   u.[Login] Login_Usuario
+	SELECT o.Id OrganizacaoId,
+		   o.Nome NomeOrganizacao,
+		   u.Id UsuarioId,
+		   u.[Login] LoginUsuario
 		FROM VW_LISTAR_ORGANIZACOES o
 			INNER JOIN Usuario_Organizacao uo
 				ON o.Id = uo.Organizacao_Id

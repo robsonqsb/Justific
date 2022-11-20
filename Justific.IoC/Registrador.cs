@@ -1,5 +1,6 @@
 ﻿using Justific.Data;
 using Justific.Data.Repositorios;
+using Justific.Dominio.Enumeradores;
 using Justific.Dominio.Interfaces.Repositorios;
 using Justific.Infra.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,7 @@ namespace Justific.IoC
             this.services = services ?? throw new ArgumentNullException(nameof(services));
         }
 
-        public void Registrar()
+        public void Registrar(TipoConexaoBD tipoConexaoDB)
         {
             services.TryAddScoped<IJustificContext, JustificContext>();
             services.TryAddScoped<IRepositorioUsuario, RepositorioUsuario>();
