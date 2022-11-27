@@ -102,5 +102,5 @@ $$
 		from vw_listar_justificativas lj
 	where lj.codigoregistro = p_codigo_registro_membro
 		and lj.cnpj = p_cnpj_organizacao
-		and lj.data_ocorrencia = p_data_ocorrencia;	
+		and lj.data_ocorrencia::date = p_data_ocorrencia;	
 $$ language sql;

@@ -109,7 +109,18 @@ CREATE OR ALTER PROC SP_OBTER_JUSTIFICATIVA
 	@Data_Ocorrencia DATE
 AS
 BEGIN
-	SELECT *
+	SELECT justificativa_id JustificativaId,
+		   data_ocorrencia DataOcorrencia,
+		   possui_comprovante PossuiComprovante,
+		   comentarios,
+		   data_criacao DataCriacao,
+		   alterado_em AlteradoEm,
+		   membro_id MembroId,
+		   CodigoRegistro,
+		   NomeMembro,
+		   OrganizacaoId,
+		   nome_organizacao NomeOrganizacao,
+		   cnpj
 		FROM VW_LISTAR_JUSTIFICATIVAS
 	WHERE CodigoRegistro = @Codigo_Registro_Membro
 		AND cnpj = @Cnpj_Organizacao
