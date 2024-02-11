@@ -38,10 +38,10 @@ namespace Justific.Data.Repositorios.SQL_Server
             return await base.Listar<ItemListaJustificativaDto>(@$"SELECT {camposViewListarJustificativas} FROM VW_LISTAR_JUSTIFICATIVAS;");
         }
 
-        public async Task<Justificativa> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime? dataOcorrencia)
+        public async Task<ItemListaJustificativaDto> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime? dataOcorrencia)
         {
             var query = "EXEC SP_OBTER_JUSTIFICATIVA @codigoRegistroMembro, @cnpjOrganizacao, @dataOcorrencia";
-            return await base.Obter(query, new { codigoRegistroMembro, cnpjOrganizacao, dataOcorrencia });
+            return await base.Obter<ItemListaJustificativaDto>(query, new { codigoRegistroMembro, cnpjOrganizacao, dataOcorrencia });
         }
 
         public async Task<long> Salvar(JustificativaInclusaoDto justificativaInclusaoDto)

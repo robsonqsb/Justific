@@ -27,12 +27,12 @@ namespace Justific.Data.Repositorios
             throw new NotImplementedException();
         }
 
-        public Task<T> Obter(string query, object param)
+        public Task<TDto> Obter<TDto>(string query, object param) where TDto : BaseDto
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> Salvar(string query, object param)
+        public Task<long> Salvar(string query, object param)
         {
             throw new NotImplementedException();
         }

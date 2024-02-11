@@ -39,12 +39,12 @@ namespace Justific.Data.Repositorios.SQL_Server
                 .Conexao.QueryAsync<ItemListaMembroOrganizacaoDto>(sqlQuery.ToString());
         }
 
-        public async Task<Membro> Obter(string codigoRegistro, int organizacaoId)
+        public async Task<ItemListaMembroOrganizacaoDto> Obter(string codigoRegistro, int organizacaoId)
         {
-            return await base.Obter("EXEC SP_OBTER_MEMBRO @codigoRegistro, @organizacaoId", new { codigoRegistro, organizacaoId });
+            return await base.Obter<ItemListaMembroOrganizacaoDto>("EXEC SP_OBTER_MEMBRO @codigoRegistro, @organizacaoId", new { codigoRegistro, organizacaoId });
         }
 
-        public async Task<int> Salvar(MembroInclusaoDto membro)
+        public async Task<long> Salvar(MembroInclusaoDto membro)
         {
             var query = "EXEC SP_INCLUIR_ALTERAR_MEMBRO @codigoRegistro, @nome, @cnpjOrganizacao";
 

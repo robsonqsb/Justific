@@ -1,6 +1,5 @@
 ﻿using Justific.Dominio.Dtos;
 using Justific.Dominio.Entidades;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +9,7 @@ namespace Justific.Dominio.Interfaces.Repositorios
     {
         Task Excluir(string query, object param);
         Task<IEnumerable<TDto>> Listar<TDto>(string query) where TDto : BaseDto;
-        Task<T> Obter(string query, object param);
-        Task<int> Salvar(string query, object param);
+        Task<TDto> Obter<TDto>(string query, object param) where TDto : BaseDto;
+        Task<long> Salvar(string query, object param);
     }
 }

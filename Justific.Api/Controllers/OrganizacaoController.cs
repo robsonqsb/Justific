@@ -1,7 +1,9 @@
-﻿using Justific.Dominio.Entidades;
+﻿using Justific.Dominio.Dtos;
+using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +20,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpGet("listar")]
+        [ProducesResponseType(typeof(IEnumerable<OrganizacaoDto>), 200)]
         public async Task<IActionResult> Listar()
         {
             try
@@ -31,6 +34,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPost("salvar")]
+        [ProducesResponseType(typeof(long), 200)]
         public async Task<IActionResult> Salvar(string cnpj, string nome)
         {
             try
@@ -61,6 +65,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpGet("obter")]
+        [ProducesResponseType(typeof(OrganizacaoDto), 200)]
         public async Task<IActionResult> Obter(string cnpj)
         {
             try
@@ -75,6 +80,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPut("vincular-usuario")]
+        [ProducesResponseType(typeof(bool), 200)]
         public async Task<IActionResult> VincularUsuario(string cnpjOrganizacao, string loginUsuario, bool desfazerVinculo = false)
         {
             try

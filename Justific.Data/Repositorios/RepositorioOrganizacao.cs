@@ -17,8 +17,7 @@ namespace Justific.Data.Repositorios
 
         public async Task Excluir(long id)
         {
-            await justificContext
-                .Conexao.ExecuteAsync("call p_excluir_organizacao(@id);", new { id });
+            await base.Excluir("call p_excluir_organizacao(@id);", new { id });
         }
 
         public async Task<IEnumerable<OrganizacaoDto>> Listar()
@@ -33,7 +32,7 @@ namespace Justific.Data.Repositorios
             return await base.Listar<OrganizacaoDto>(query);
         }
 
-        public async Task<Organizacao> Obter(string cnpj)
+        public async Task<OrganizacaoDto> Obter(string cnpj)
         {
             var query = @"select id,
                                  nome,
@@ -42,14 +41,12 @@ namespace Justific.Data.Repositorios
                                  alterado_em AlteradoEm
                              from f_obter_organizacao (@cnpj);";
 
-            return await justificContext
-                .Conexao.QueryFirstOrDefaultAsync<Organizacao>(query, new { cnpj });
+            return await base.Obter<OrganizacaoDto>(query, new { cnpj });
         }
 
         public async Task<long> Salvar(string cnpj, string nome)
         {
-            return await justificContext
-                .Conexao.ExecuteScalarAsync<long>("select f_incluir_alterar_organizacao(@nome, @cnpj);", new { cnpj, nome });
+            return await base.Salvar("select f_incluir_alterar_organizacao(@nome, @cnpj);", new { cnpj, nome });
         }
 
         public async Task<bool> VincularUsuario(string login, string cnpjOrganizacao, bool desfazerVinculo)

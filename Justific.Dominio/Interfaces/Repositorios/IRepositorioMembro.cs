@@ -7,8 +7,8 @@ namespace Justific.Dominio.Interfaces.Repositorios
 {
     public interface IRepositorioMembro : IRepositorioBase<Membro>
     {
-        Task<Membro> Obter(string codigoRegistro, int organizacaoId);
-        Task<int> Salvar(MembroInclusaoDto membro);
+        Task<ItemListaMembroOrganizacaoDto> Obter(string codigoRegistro, int organizacaoId);
+        Task<long> Salvar(MembroInclusaoDto membro);
         Task<IEnumerable<ItemListaMembroOrganizacaoDto>> Listar();
         Task Excluir(long id);
     }

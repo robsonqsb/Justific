@@ -14,6 +14,6 @@ namespace Justific.Dominio.Interfaces.Repositorios
 
         Task Excluir(long justificativaId);
 
-        Task<Justificativa> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime? dataOcorrencia);
+        Task<ItemListaJustificativaDto> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime? dataOcorrencia);
     }
 }

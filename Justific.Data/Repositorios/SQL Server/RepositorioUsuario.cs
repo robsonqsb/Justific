@@ -42,9 +42,9 @@ namespace Justific.Data.Repositorios.SQL_Server
             return await base.Listar<UsuarioDto>(query);
         }
 
-        public async Task<Usuario> Obter(string login)
+        public async Task<UsuarioDto> Obter(string login)
         {
-            return await Obter("EXEC SP_OBTER_USUARIO @login", new { login });
+            return await Obter<UsuarioDto>("EXEC SP_OBTER_USUARIO @login", new { login });
         }
     }
 }

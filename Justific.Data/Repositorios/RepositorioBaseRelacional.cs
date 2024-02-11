@@ -30,16 +30,16 @@ namespace Justific.Data.Repositorios
                 .Conexao.QueryAsync<TDto>(query);
         }
 
-        public virtual async Task<T> Obter(string query, object param)
+        public virtual async Task<TDto> Obter<TDto>(string query, object param) where TDto : BaseDto
         {
             return await justificContext
-                .Conexao.QueryFirstOrDefaultAsync<T>(query, param);
+                .Conexao.QueryFirstOrDefaultAsync<TDto>(query, param);
         }
 
-        public virtual async Task<int> Salvar(string query, object param)
+        public virtual async Task<long> Salvar(string query, object param)
         {
             return await justificContext
-                .Conexao.ExecuteScalarAsync<int>(query, param);
+                .Conexao.ExecuteScalarAsync<long>(query, param);
         }
     }
 }

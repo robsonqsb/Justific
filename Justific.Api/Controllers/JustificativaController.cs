@@ -3,6 +3,7 @@ using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpGet("listar")]
+        [ProducesResponseType(typeof(IEnumerable<ItemListaJustificativaDto>), 200)]
         public async Task<IActionResult> Listar()
         {
             try
@@ -38,7 +40,8 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPost("salvar")]
-        public async Task<IActionResult> Salvar(JustificativaInclusaoDto justificativaInclusaoDto)
+        [ProducesResponseType(typeof(long), 200)]
+        public async Task<IActionResult> Salvar([FromBody] JustificativaInclusaoDto justificativaInclusaoDto)
         {
             try
             {
@@ -68,6 +71,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpGet("obter")]
+        [ProducesResponseType(typeof(ItemListaJustificativaDto), 200)]
         public async Task<IActionResult> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime dataOcorrencia)
         {
             try

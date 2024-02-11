@@ -43,7 +43,7 @@ namespace Justific.Data.Repositorios
             return await base.Listar<UsuarioDto>(query);
         }
 
-        public async Task<Usuario> Obter(string login)
+        public async Task<UsuarioDto> Obter(string login)
         {
             var query = @"select id,
                                  login,
@@ -51,7 +51,7 @@ namespace Justific.Data.Repositorios
                                  alterado_em AlteradoEm
                             from f_obter_usuario (@login);";
 
-            return await Obter(query, new { login });
+            return await Obter<UsuarioDto>(query, new { login });
         }
     }
 }

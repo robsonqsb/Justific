@@ -1,8 +1,10 @@
-﻿using Justific.Dominio.Entidades;
+﻿using Justific.Dominio.Dtos;
+using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Justific.Api.Controllers
@@ -18,6 +20,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPost("efetuar_login")]
+        [ProducesResponseType(401)]
         public async Task<IActionResult> EfetuarLogin(string login, string senha)
         {
             try
@@ -57,6 +60,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPost("salvar")]
+        [ProducesResponseType(typeof(long), 200)]
         public async Task<IActionResult> Salvar(string login, string senha)
         {
             try
@@ -73,6 +77,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpGet("listar")]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioDto>), 200)]
         public async Task<IActionResult> Listar()
         {
             try
@@ -87,6 +92,7 @@ namespace Justific.Api.Controllers
         }
 
         [HttpGet("obter")]
+        [ProducesResponseType(typeof(UsuarioDto), 200)]
         public async Task<IActionResult> Obter(string login)
         {
             try

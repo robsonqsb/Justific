@@ -37,16 +37,14 @@ namespace Justific.Data.Repositorios.SQL_Server
                 .Conexao.QueryAsync<ItemListaOrganizacaoUsuarioDto>("EXEC SP_LISTAR_ORGANIZACOES_USUARIOS @cnpjOrganizacao", new { cnpjOrganizacao });
         }
 
-        public async Task<Organizacao> Obter(string cnpj)
+        public async Task<OrganizacaoDto> Obter(string cnpj)
         {
-            return await justificContext
-                .Conexao.QueryFirstOrDefaultAsync<Organizacao>("EXEC SP_OBTER_ORGANIZACAO @cnpj", new { cnpj });
+            return await base.Obter<OrganizacaoDto>("EXEC SP_OBTER_ORGANIZACAO @cnpj", new { cnpj });
         }
 
         public async Task<long> Salvar(string cnpj, string nome)
         {
-            return await justificContext
-                .Conexao.ExecuteScalarAsync<long>("EXEC SP_INCLUIR_ALTERAR_ORGANIZACAO @nome, @cnpj", new { cnpj, nome });
+            return await base.Salvar("EXEC SP_INCLUIR_ALTERAR_ORGANIZACAO @nome, @cnpj", new { cnpj, nome });
         }
 
         public async Task<bool> VincularUsuario(string login, string cnpjOrganizacao, bool desfazerVinculo)

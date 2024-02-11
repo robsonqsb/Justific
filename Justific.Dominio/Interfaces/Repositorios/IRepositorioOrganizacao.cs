@@ -11,6 +11,7 @@ namespace Justific.Dominio.Interfaces.Repositorios
         Task<IEnumerable<ItemListaOrganizacaoUsuarioDto>> ListarUsuariosAtrelados(string cnpjOrganizacao);
         Task<IEnumerable<OrganizacaoDto>> Listar();
         Task Excluir(long id);
-        Task<Organizacao> Obter(string cnpj);
+        Task<OrganizacaoDto> Obter(string cnpj);
+        Task<long> Salvar(string nome, string cnpj);
     }
 }
