@@ -6,52 +6,45 @@ using Justific.Infra.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Justific.Data.Repositorios
+namespace Justific.Data.Repositorios.SQL_Server
 {
     public class RepositorioUsuario : RepositorioBaseRelacional<Usuario>, IRepositorioUsuario
     {
-        public RepositorioUsuario(IJustificContext justificContext)
-            : base(justificContext)
+        public RepositorioUsuario(IJustificContext justificContext) : base(justificContext)
         {
         }
 
         public async Task<bool> ConfirmarLogin(string login, string senha)
         {
             return await justificContext
-                .Conexao.ExecuteScalarAsync<bool>("select f_confirmar_login_usuario(@login, @senha);", new { login, senha });
+                .Conexao.ExecuteScalarAsync<bool>("EXEC SP_CONFIRMAR_LOGIN_USUARIO @login, @senha", new { login, senha });
         }
 
         public async Task Excluir(long id)
         {
-            await base.Excluir("call p_excluir_usuario(@id);", new { id });
+            await base.Excluir("EXEC SP_EXCLUIR_USUARIO @id", new { id });
         }
 
         public async Task<long> IncluirAlterar(string login, string senha)
         {
             return await justificContext
-                .Conexao.ExecuteScalarAsync<long>("select f_incluir_alterar_usuario(@login, @senha);", new { login, senha });
+                .Conexao.ExecuteScalarAsync<long>("EXEC SP_INCLUIR_ALTERAR_USUARIO @login, @senha", new { login, senha });
         }
 
         public async Task<IEnumerable<UsuarioDto>> Listar()
         {
-            var query = @"select id,
+            var query = @"SELECT id,
                                  login,
                                  data_criacao DataCriacao,
                                  alterado_em AlteradoEm
-                            from vw_listar_usuarios;";
+                            FROM VW_LISTAR_USUARIOS";
 
             return await base.Listar<UsuarioDto>(query);
         }
 
         public async Task<Usuario> Obter(string login)
         {
-            var query = @"select id,
-                                 login,
-                                 data_criacao DataCriacao,
-                                 alterado_em AlteradoEm
-                            from f_obter_usuario (@login);";
-
-            return await Obter(query, new { login });
+            return await Obter("EXEC SP_OBTER_USUARIO @login", new { login });
         }
     }
 }

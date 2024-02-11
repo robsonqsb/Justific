@@ -1,10 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Justific.Dominio.Entidades
 {
-    public class EntidadeBase
+    public abstract class EntidadeBase
     {
         [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public long IdRelacional { get; set; }
+
+        [JsonPropertyName("_id")]
+        public Guid IdNoSql { get; set; }
     }
 }

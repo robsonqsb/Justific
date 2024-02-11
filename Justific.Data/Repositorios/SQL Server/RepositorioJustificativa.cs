@@ -6,14 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Justific.Data.Repositorios
+namespace Justific.Data.Repositorios.SQL_Server
 {
     public class RepositorioJustificativa : RepositorioBaseRelacional<Justificativa>, IRepositorioJustificativa
     {
         private readonly string camposViewListarJustificativas;
 
-        public RepositorioJustificativa(IJustificContext justificContext)
-            : base(justificContext)
+        public RepositorioJustificativa(IJustificContext justificContext) : base(justificContext)
         {
             camposViewListarJustificativas = @"justificativa_id JustificativaId,
                                                data_ocorrencia DataOcorrencia,
@@ -31,23 +30,23 @@ namespace Justific.Data.Repositorios
 
         public async Task Excluir(long justificativaId)
         {
-            await base.Excluir("call p_excluir_justificativa(@justificativaId);", new { justificativaId });
+            await base.Excluir("EXEC SP_EXCLUIR_JUSTIFICATIVA @justificativaId", new { justificativaId });
         }
 
         public async Task<IEnumerable<ItemListaJustificativaDto>> Listar()
         {
-            return await base.Listar<ItemListaJustificativaDto>(@$"select {camposViewListarJustificativas} from vw_listar_justificativas;");
+            return await base.Listar<ItemListaJustificativaDto>(@$"SELECT {camposViewListarJustificativas} FROM VW_LISTAR_JUSTIFICATIVAS;");
         }
 
         public async Task<Justificativa> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime? dataOcorrencia)
         {
-            var query = $"select {camposViewListarJustificativas} from f_obter_justificativa(@codigoRegistroMembro, @cnpjOrganizacao, @dataOcorrencia::date);";
+            var query = "EXEC SP_OBTER_JUSTIFICATIVA @codigoRegistroMembro, @cnpjOrganizacao, @dataOcorrencia";
             return await base.Obter(query, new { codigoRegistroMembro, cnpjOrganizacao, dataOcorrencia });
         }
 
         public async Task<long> Salvar(JustificativaInclusaoDto justificativaInclusaoDto)
         {
-            var query = "select f_incluir_alterar_justificativa(@codigoRegistroMembro, @cnpjOrganizacao, @comentarios, @dataOcorrencia::date, @possuiComprovante::boolean);";
+            var query = "EXEC SP_INCLUIR_ALTERAR_JUSTIFICATIVA @codigoRegistroMembro, @cnpjOrganizacao, @comentarios, @dataOcorrencia, @possuiComprovante";
 
             return await base.Salvar(query, new
             {

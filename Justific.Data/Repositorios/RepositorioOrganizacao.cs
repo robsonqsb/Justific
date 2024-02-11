@@ -3,13 +3,12 @@ using Justific.Dominio.Dtos;
 using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Justific.Infra.Interfaces;
-using Npgsql;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios
 {
-    public class RepositorioOrganizacao : RepositorioBase<Organizacao>, IRepositorioOrganizacao
+    public class RepositorioOrganizacao : RepositorioBaseRelacional<Organizacao>, IRepositorioOrganizacao
     {
         public RepositorioOrganizacao(IJustificContext justificContext)
             : base(justificContext)
@@ -18,15 +17,11 @@ namespace Justific.Data.Repositorios
 
         public async Task Excluir(long id)
         {
-            var query = justificContext.Conexao is NpgsqlConnection ?
-                    "call p_excluir_organizacao(@id);" :
-                    "EXEC SP_EXCLUIR_ORGANIZACAO @id";
-
             await justificContext
-                .Conexao.ExecuteAsync(query, new { id });
+                .Conexao.ExecuteAsync("call p_excluir_organizacao(@id);", new { id });
         }
 
-        public async Task<IEnumerable<Organizacao>> Listar()
+        public async Task<IEnumerable<OrganizacaoDto>> Listar()
         {
             var query = @"select id,
                                  nome,
@@ -35,20 +30,17 @@ namespace Justific.Data.Repositorios
                                  alterado_em AlteradoEm
                             from vw_listar_organizacoes;";
 
-            return await justificContext
-                .Conexao.QueryAsync<Organizacao>(query);
+            return await base.Listar<OrganizacaoDto>(query);
         }
 
         public async Task<Organizacao> Obter(string cnpj)
         {
-            var query = justificContext.Conexao is NpgsqlConnection ?
-                        @"select id,
+            var query = @"select id,
                                  nome,
                                  cnpj,
                                  data_criacao DataCriacao,
                                  alterado_em AlteradoEm
-                             from f_obter_organizacao (@cnpj);" :
-                        "EXEC SP_OBTER_ORGANIZACAO @cnpj";
+                             from f_obter_organizacao (@cnpj);";
 
             return await justificContext
                 .Conexao.QueryFirstOrDefaultAsync<Organizacao>(query, new { cnpj });
@@ -56,35 +48,23 @@ namespace Justific.Data.Repositorios
 
         public async Task<long> Salvar(string cnpj, string nome)
         {
-            var query = justificContext.Conexao is NpgsqlConnection ?
-                "select f_incluir_alterar_organizacao(@nome, @cnpj);" :
-                "EXEC SP_INCLUIR_ALTERAR_ORGANIZACAO @nome, @cnpj";
-
-            var id = await justificContext
-                .Conexao.ExecuteScalarAsync<long>(query, new { cnpj, nome });
-
-            return id;
+            return await justificContext
+                .Conexao.ExecuteScalarAsync<long>("select f_incluir_alterar_organizacao(@nome, @cnpj);", new { cnpj, nome });
         }
 
         public async Task<bool> VincularUsuario(string login, string cnpjOrganizacao, bool desfazerVinculo)
         {
-            var query = justificContext.Conexao is NpgsqlConnection ?
-                "select f_vincular_organizacao_usuario(@login, @cnpjOrganizacao, @desfazerVinculo);" :
-                "EXEC SP_VINCULAR_ORGANIZACAO_USUARIO @login, @cnpjOrganizacao, @desfazerVinculo";
-
             return await justificContext
-                .Conexao.ExecuteScalarAsync<bool>(query, new { login, cnpjOrganizacao, desfazerVinculo });
+                .Conexao.ExecuteScalarAsync<bool>("select f_vincular_organizacao_usuario(@login, @cnpjOrganizacao, @desfazerVinculo);", new { login, cnpjOrganizacao, desfazerVinculo });
         }
 
         public async Task<IEnumerable<ItemListaOrganizacaoUsuarioDto>> ListarUsuariosAtrelados(string cnpjOrganizacao)
         {
-            var query = justificContext.Conexao is NpgsqlConnection ?
-                        @"select organizacao_id OrganizacaoId,
+            var query = @"select organizacao_id OrganizacaoId,
                                  nome_organizacao NomeOrganizacao,
                                  usuario_id UsuarioId,
                                  login_usuario LoginUsuario
-                            from f_listar_organizacoes_usuarios(@cnpjOrganizacao);" :
-                        "EXEC SP_LISTAR_ORGANIZACOES_USUARIOS @cnpjOrganizacao";
+                            from f_listar_organizacoes_usuarios(@cnpjOrganizacao);";
 
             return await justificContext
                 .Conexao.QueryAsync<ItemListaOrganizacaoUsuarioDto>(query, new { cnpjOrganizacao });

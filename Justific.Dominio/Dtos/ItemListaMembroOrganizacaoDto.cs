@@ -2,7 +2,7 @@
 
 namespace Justific.Dominio.Dtos
 {
-    public class ItemListaMembroOrganizacaoDto
+    public class ItemListaMembroOrganizacaoDto : BaseDto
     {
         public long MembroId { get; set; }
         public string CodigoRegistro { get; set; }

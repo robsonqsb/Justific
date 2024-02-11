@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Justific.Dominio.Dtos
+﻿namespace Justific.Dominio.Dtos
 {
-    public class ItemListaOrganizacaoUsuarioDto
+    public class ItemListaOrganizacaoUsuarioDto : BaseDto
     {
         public long OrganizacaoId { get; set; }
         public string NomeOrganizacao { get; set; }

@@ -1,35 +1,27 @@
-﻿using Amazon.Runtime.Internal;
-using Dapper;
+﻿using Dapper;
 using Justific.Dominio.Dtos;
 using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Justific.Infra.Interfaces;
-using Npgsql;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Justific.Data.Repositorios
+namespace Justific.Data.Repositorios.SQL_Server
 {
     public class RepositorioMembro : RepositorioBaseRelacional<Membro>, IRepositorioMembro
     {
-        public RepositorioMembro(IJustificContext justificContext)
-            : base(justificContext)
+        public RepositorioMembro(IJustificContext justificContext) : base(justificContext)
         {
         }
 
         public async Task Excluir(long id)
         {
             await justificContext
-                .Conexao.ExecuteAsync("call p_excluir_membro(@id);", new { id });
+                .Conexao.ExecuteAsync("EXEC SP_EXCLUIR_MEMBRO @id", new { id });
         }
 
         public async Task<IEnumerable<ItemListaMembroOrganizacaoDto>> Listar()
-        {
-            return await base.Listar<ItemListaMembroOrganizacaoDto>("select * from vw_listar_membros;");
-        }
-
-        public async Task<Membro> Obter(string codigoRegistro, int organizacaoId)
         {
             var sqlQuery = new StringBuilder();
 
@@ -41,14 +33,20 @@ namespace Justific.Data.Repositorios
             sqlQuery.AppendLine("       OrganizacaoId,");
             sqlQuery.AppendLine("       NomeOrganizacao,");
             sqlQuery.AppendLine("       CNPJ");
-            sqlQuery.AppendLine("   from f_obter_membro(@codigoRegistro, @organizacaoId);");
+            sqlQuery.AppendLine("   FROM VW_LISTAR_MEMBROS");
 
-            return await base.Obter(sqlQuery.ToString(), new { codigoRegistro, organizacaoId });
+            return await justificContext
+                .Conexao.QueryAsync<ItemListaMembroOrganizacaoDto>(sqlQuery.ToString());
+        }
+
+        public async Task<Membro> Obter(string codigoRegistro, int organizacaoId)
+        {
+            return await base.Obter("EXEC SP_OBTER_MEMBRO @codigoRegistro, @organizacaoId", new { codigoRegistro, organizacaoId });
         }
 
         public async Task<int> Salvar(MembroInclusaoDto membro)
         {
-            var query = "select f_incluir_alterar_membro(@codigoRegistro, @nome, @cnpjOrganizacao);";
+            var query = "EXEC SP_INCLUIR_ALTERAR_MEMBRO @codigoRegistro, @nome, @cnpjOrganizacao";
 
             return await justificContext
                 .Conexao.ExecuteScalarAsync<int>(query, new

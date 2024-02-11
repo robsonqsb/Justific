@@ -8,9 +8,12 @@ namespace Justific.Dominio.Interfaces.Repositorios
 {
     public interface IRepositorioJustificativa : IRepositorioBase<Justificativa>
     {
-        Task<int> Salvar(string codigoRegistroMembro, string cnpjOrganizacao, string comentarios, DateTime? dataOcorrencia, bool? possuiComprovante);
-        Task Excluir(int justificativaId);
         Task<IEnumerable<ItemListaJustificativaDto>> Listar();
+
+        Task<long> Salvar(JustificativaInclusaoDto justificativaInclusaoDto);
+
+        Task Excluir(long justificativaId);
+
         Task<Justificativa> Obter(string codigoRegistroMembro, string cnpjOrganizacao, DateTime? dataOcorrencia);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Justific.Dominio.Dtos
 {
-    public class ItemListaJustificativaDto
+    public class ItemListaJustificativaDto : BaseDto
     {
         public long JustificativaId { get; set; }
         public DateTime DataOcorrencia { get; set; }

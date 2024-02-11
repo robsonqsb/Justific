@@ -1,4 +1,5 @@
 ﻿using Justific.Data.Repositorios;
+using Justific.Dominio.Dtos;
 using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
@@ -46,12 +47,12 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPost("salvar")]
-        public async Task<IActionResult> Salvar(string codigoRegistro, string nome, string cnpjOrganizacao)
+        public async Task<IActionResult> Salvar(MembroInclusaoDto membroInclusaoDto)
         {
             try
             {
                 return Ok(await repositorioMembro
-                    .Salvar(codigoRegistro, nome, cnpjOrganizacao));
+                    .Salvar(membroInclusaoDto));
             }
             catch (Exception ex)
             {

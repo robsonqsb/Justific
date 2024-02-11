@@ -1,4 +1,5 @@
-﻿using Justific.Dominio.Entidades;
+﻿using Justific.Dominio.Dtos;
+using Justific.Dominio.Entidades;
 using Justific.Dominio.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,12 +38,12 @@ namespace Justific.Api.Controllers
         }
 
         [HttpPost("salvar")]
-        public async Task<IActionResult> Salvar(string codigoRegistroMembro, string cnpjOrganizacao, string comentarios, DateTime? dataOcorrencia, bool? possuiComprovante)
+        public async Task<IActionResult> Salvar(JustificativaInclusaoDto justificativaInclusaoDto)
         {
             try
             {
                 return Ok(await repositorioJustificativa
-                    .Salvar(codigoRegistroMembro, cnpjOrganizacao, comentarios, dataOcorrencia, possuiComprovante));
+                    .Salvar(justificativaInclusaoDto));
             }
             catch (Exception ex)
             {
