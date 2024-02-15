@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios.SQL_Server
 {
-    public class RepositorioMembro : RepositorioBaseRelacional<Membro>, IRepositorioMembro
+    public class RepositorioMembro : RepositorioBase<Membro>, IRepositorioMembro
     {
         public RepositorioMembro(IJustificContext justificContext) : base(justificContext)
         {

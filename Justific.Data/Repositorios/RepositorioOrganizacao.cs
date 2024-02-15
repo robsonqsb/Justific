@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios
 {
-    public class RepositorioOrganizacao : RepositorioBaseRelacional<Organizacao>, IRepositorioOrganizacao
+    public class RepositorioOrganizacao : RepositorioBase<Organizacao>, IRepositorioOrganizacao
     {
         public RepositorioOrganizacao(IJustificContext justificContext)
             : base(justificContext)

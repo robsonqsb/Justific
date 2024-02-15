@@ -27,8 +27,6 @@ namespace Justific.IoC
                 case TipoConexaoBD.SQL_Server:
                     RegistrarSqlServer();
                     break;
-                case TipoConexaoBD.MongoDB:
-                    break;
                 case TipoConexaoBD.PostgreSQL:
                 default:
                     RegistrarPostgreSql();

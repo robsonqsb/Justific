@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Justific.Dominio.Entidades
 {
@@ -9,6 +8,6 @@ namespace Justific.Dominio.Entidades
         public long IdRelacional { get; set; }
 
         [JsonPropertyName("_id")]
-        public Guid IdNoSql { get; set; }
+        public string IdNoSql { get; set; }
     }
 }

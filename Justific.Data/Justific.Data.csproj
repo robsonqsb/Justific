@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Scripts\DDL\" />
-    <Folder Include="Scripts\MongoDB\DDL\" />
   </ItemGroup>
 
   <ItemGroup>

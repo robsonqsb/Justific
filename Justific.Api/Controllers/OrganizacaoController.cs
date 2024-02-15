@@ -14,7 +14,6 @@ namespace Justific.Api.Controllers
         private readonly IRepositorioOrganizacao repositorioOrganizacao;
 
         public OrganizacaoController(IRepositorioOrganizacao repositorioOrganizacao)
-            : base(repositorioOrganizacao)
         {
             this.repositorioOrganizacao = repositorioOrganizacao ?? throw new ArgumentNullException(nameof(repositorioOrganizacao));
         }

@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Threading.Tasks;
-using MongoDB.Driver;
 
 namespace Justific.Infra.Interfaces
 {
@@ -8,6 +7,5 @@ namespace Justific.Infra.Interfaces
     {
         Task Dispose();
         IDbConnection Conexao { get; }
-        IMongoClient MongoClient { get; }
     }
 }

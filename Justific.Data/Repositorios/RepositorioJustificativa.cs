@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios
 {
-    public class RepositorioJustificativa : RepositorioBaseRelacional<Justificativa>, IRepositorioJustificativa
+    public class RepositorioJustificativa : RepositorioBase<Justificativa>, IRepositorioJustificativa
     {
         private readonly string camposViewListarJustificativas;
 

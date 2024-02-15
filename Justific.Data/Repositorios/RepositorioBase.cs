@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Justific.Data.Repositorios
 {
-    public abstract class RepositorioBaseRelacional<T> : IRepositorioBase<T> where T : EntidadeBase
+    public abstract class RepositorioBase<T> : IRepositorioBase<T> where T : EntidadeBase
     {
         protected readonly IJustificContext justificContext;
 
-        public RepositorioBaseRelacional(IJustificContext justificContext)
+        public RepositorioBase(IJustificContext justificContext)
         {
             this.justificContext = justificContext ?? throw new ArgumentNullException(nameof(justificContext));
         }
